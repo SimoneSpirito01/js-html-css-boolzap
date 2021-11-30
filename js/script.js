@@ -83,6 +83,7 @@ const app = new Vue({
                 ],
             },
         ],
+        newMessage: ''
     },
     methods: {
         urlImg: function(index){
@@ -93,6 +94,27 @@ const app = new Vue({
                 element.visible = false;
             });
             this.contacts[index].visible = true;
+        },
+        sendMessage: function(){
+            this.contacts.forEach(element => {
+                if (element.visible){
+                    element.messages.push({
+                        date: '28/03/2020 10:10:40',
+                        message: this.newMessage,
+                        status: 'sent'
+                    },
+                    {
+                        message: 'sta scrivendo...',
+                        status: 'received'
+                    });
+                    this.newMessage = '';
+                    setTimeout(function(){
+                        element.messages[element.messages.length - 1].date = '28/03/2020 10:10:40';
+                        element.messages[element.messages.length - 1].message = 'Ok'
+                    }, 1000)
+                }
+                
+            });
         }
     }
 })

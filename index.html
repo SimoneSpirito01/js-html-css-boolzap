@@ -108,14 +108,14 @@
                     <div v-for="(chat, i) in contacts" class="chat-content" :class="{ active: chat.visible }">
 
                         <div v-for="(message, i) in chat.messages" class="line-message">
-                            <span class="message send">{{message.message}}<span class="time-message">{{message.date}}</span></span>
+                            <span class="message" :class="message.status">{{message.message}}<span class="time-message">{{message.date}}</span></span>
                         </div>
 
                     </div>
 
                     <div class="new-message">
                         <i class="far fa-smile"></i>
-                        <input type="text" placeholder="Scrivi un messaggio">
+                        <input @keyup.enter="sendMessage()" v-model="newMessage" type="text" placeholder="Scrivi un messaggio">
                         <i class="fas fa-microphone"></i>
                     </div>
                     
