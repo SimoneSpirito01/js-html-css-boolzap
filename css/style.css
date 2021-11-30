@@ -105,6 +105,8 @@ i {
 .allow-bottom {
     color: #6aa1bb;
     font-size: 13px;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .search-chat {

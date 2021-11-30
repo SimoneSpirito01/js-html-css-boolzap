@@ -83,17 +83,34 @@ const app = new Vue({
                 ],
             },
         ],
-        newMessage: ''
+        newMessage: '',
+        filterValue: '',
+        filteredContacts: []
     },
     methods: {
         urlImg: function(index){
             return 'img/avatar' + this.contacts[index].avatar + '.jpg'
         },
+        urlImgFl: function(index){
+            return 'img/avatar' + this.filteredContacts[index].avatar + '.jpg'
+        },
         activeChat: function(index){
             this.contacts.forEach(element => {
                 element.visible = false;
             });
+            this.filteredContacts.forEach(element => {
+                element.visible = false;
+            });
             this.contacts[index].visible = true;
+        },
+        activeChatFl: function(index){
+            this.filteredContacts.forEach(element => {
+                element.visible = false;
+            });
+            this.contacts.forEach(element => {
+                element.visible = false;
+            });
+            this.filteredContacts[index].visible = true;
         },
         sendMessage: function(){
             this.contacts.forEach(element => {
@@ -114,7 +131,19 @@ const app = new Vue({
                     }, 1000)
                 }
                 
-            });
+            })
+        },
+        removeAlert: function(){
+            document.querySelector('.allow-not').remove();
+        },
+        filterChat: function(){
+            this.filteredContacts = this.contacts.filter(element => {
+                return element.name.toLocaleLowerCase().includes(this.filterValue.toLocaleLowerCase());
+            })
+            
         }
+    },
+    updated() {
+
     }
 })
