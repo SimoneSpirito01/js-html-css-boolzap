@@ -26,9 +26,9 @@
 
                     <div class="my-profile">
                         <img class="avatar" src="img/avatar_io.jpg" alt="my-avatar">
-                        <div class="my-name">
+                        <p class="my-name">
                             Nome Utente
-                        </div>
+                        </p>
                     </div>
                     <div class="icons">
                         <i class="fas fa-circle-notch"></i>
@@ -41,6 +41,34 @@
 
                 <!-- main-sx -->
                 <div class="main-sx">
+
+                    <div class="allow-not">
+                        <div class="bell">
+                            <i class="fas fa-bell-slash"></i>
+                        </div>
+                        <div class="allow-text">
+                            <p class="allow-top">
+                                Ricevi notifiche di nuovi messaggi
+                            </p>
+                            <a href="" class="allow-bottom">
+                                Attiva notifiche desktop
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="search-chat">
+                        <form action="">
+                            <button type="submit"><i class="fas fa-search"></i></button>
+                            <input type="search" placeholder="Cerca o inizia una nuova chat">
+                        </form>
+                    </div>
+
+                    <div class="chats">
+                        <div v-for="(contact, i) in contacts" class="chat">
+                            <img class="avatar" :src="urlImg(i)" :alt="contact.name">
+                            <div class="chat-name">{{contact.name}}</div>
+                        </div>
+                    </div>
 
                 </div>
                 <!-- main-sx -->
@@ -57,12 +85,12 @@
                     <div class="chat-profile">
                         <img class="avatar" src="img/avatar_1.jpg" alt="">
                         <div class="chat-info">
-                            <div class="chat-name">
+                            <p class="chat-name">
                                 Michele
-                            </div>
-                            <div class="chat-access">
+                            </p>
+                            <p class="chat-access">
                                 Ultimo accesso oggi alle
-                            </div>
+                            </p>
                         </div>
                     </div>
                     <div class="icons">
@@ -76,6 +104,24 @@
 
                 <!-- main-dx -->
                 <div class="main-dx">
+
+                    <div class="chat-content">
+
+                        <div class="line-message">
+                            <span class="message send">Ciao come stai?<span class="time-message">10/01/2020 15:30:55</span></span>
+                        </div>
+
+                        <div class="line-message">
+                            <span class="message recived">Bene e tu?<span class="time-message">10/01/2020 15:30:55</span></span>
+                        </div>
+
+                    </div>
+
+                    <div class="new-message">
+                        <i class="far fa-smile"></i>
+                        <input type="text" placeholder="Scrivi un messaggio">
+                        <i class="fas fa-microphone"></i>
+                    </div>
                     
                 </div>
                 <!-- main-dx -->

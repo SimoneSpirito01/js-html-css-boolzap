@@ -85,6 +85,8 @@ const app = new Vue({
         ],
     },
     methods: {
-
+        urlImg: function(index){
+            return 'img/avatar' + this.contacts[index].avatar + '.jpg'
+        }
     }
 })
