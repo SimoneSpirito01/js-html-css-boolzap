@@ -27,7 +27,7 @@ const app = new Vue({
             {
                 name: 'Fabio',
                 avatar: '_2',
-                visible: true,
+                visible: false,
                 messages: [{
                     date: '20/03/2020 16:30:00',
                     message: 'Ciao come stai?',
@@ -48,7 +48,7 @@ const app = new Vue({
             {
                 name: 'Samuele',
                 avatar: '_3',
-                visible: true,
+                visible: false,
                 messages: [{
                     date: '28/03/2020 10:10:40',
                     message: 'La Marianna va in campagna',
@@ -69,7 +69,7 @@ const app = new Vue({
             {
                 name: 'Luisa',
                 avatar: '_4',
-                visible: true,
+                visible: false,
                 messages: [{
                     date: '10/01/2020 15:30:55',
                     message: 'Lo sai che ha aperto una nuova pizzeria?',
@@ -87,6 +87,12 @@ const app = new Vue({
     methods: {
         urlImg: function(index){
             return 'img/avatar' + this.contacts[index].avatar + '.jpg'
+        },
+        activeChat: function(index){
+            this.contacts.forEach(element => {
+                element.visible = false;
+            });
+            this.contacts[index].visible = true;
         }
     }
 })

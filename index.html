@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="chats">
-                        <div v-for="(contact, i) in contacts" class="chat">
+                        <div v-for="(contact, i) in contacts" class="chat" @click="activeChat(i)">
                             <img class="avatar" :src="urlImg(i)" :alt="contact.name">
                             <div class="chat-name">{{contact.name}}</div>
                         </div>
@@ -82,11 +82,11 @@
                 <!-- header-dx -->
                 <div class="header-dx">
 
-                    <div class="chat-profile">
-                        <img class="avatar" src="img/avatar_1.jpg" alt="">
+                    <div v-for="(info ,i) in contacts" class="chat-profile" :class="{ active: info.visible }">
+                        <img class="avatar" :src="urlImg(i)" :alt="info.name">
                         <div class="chat-info">
                             <p class="chat-name">
-                                Michele
+                                {{info.name}}
                             </p>
                             <p class="chat-access">
                                 Ultimo accesso oggi alle
@@ -105,14 +105,10 @@
                 <!-- main-dx -->
                 <div class="main-dx">
 
-                    <div class="chat-content">
+                    <div v-for="(chat, i) in contacts" class="chat-content" :class="{ active: chat.visible }">
 
-                        <div class="line-message">
-                            <span class="message send">Ciao come stai?<span class="time-message">10/01/2020 15:30:55</span></span>
-                        </div>
-
-                        <div class="line-message">
-                            <span class="message recived">Bene e tu?<span class="time-message">10/01/2020 15:30:55</span></span>
+                        <div v-for="(message, i) in chat.messages" class="line-message">
+                            <span class="message send">{{message.message}}<span class="time-message">{{message.date}}</span></span>
                         </div>
 
                     </div>
