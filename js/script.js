@@ -86,7 +86,8 @@ const app = new Vue({
         newMessage: '',
         filterValue: '',
         filteredContacts: [],
-        myDate: ''
+        myDate: '',
+        btnNewChat: false
     },
     methods: {
         // funzione per ottonere l'url corretto dell'avatar
@@ -169,7 +170,11 @@ const app = new Vue({
             const chatContent = document.querySelector('.chat-content.active');
             chatContent.scrollTop = chatContent.scrollHeight;
             console.log('ok');
+        },
+        checkNewChat: function(){
+            this.btnNewChat = !this.btnNewChat;
         }
+
 
     }
 })

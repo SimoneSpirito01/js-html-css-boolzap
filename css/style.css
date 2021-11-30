@@ -21,6 +21,7 @@
     width: 78%;
     height: 95%;
     display: flex;
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
 }
 
 .avatar {
@@ -48,6 +49,10 @@ i {
     background-color: #e9eaea;
     align-items: center;
     padding: 0 10px;
+}
+
+.header-sx {
+    border-right: 1px solid #dbdbdb;
 }
 
 .my-profile, .chat-profile {
@@ -182,6 +187,23 @@ i {
     margin-left: 15px;
 }
 
+.header-new-chat {
+    height: 15.25%;
+    background-color: #31bfa5;
+    display: flex;
+    align-items: flex-end;
+    font-size: 22px;
+    color: white;
+    padding: 25px;
+}
+
+.header-new-chat i {
+    margin-right: 25px;
+}
+
+.main-new-chat {
+    height: calc(100% - 150px);
+}
 
 /* col destra */
 
@@ -240,6 +262,7 @@ i {
     min-width: 240px;
     border-radius: 18px;
     position: relative;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .message.sent {
@@ -279,6 +302,7 @@ i {
     border: none;
     border-radius: 10px;
     padding: 0 15px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 
