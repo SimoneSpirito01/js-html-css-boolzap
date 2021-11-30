@@ -87,7 +87,8 @@ const app = new Vue({
         filterValue: '',
         filteredContacts: [],
         myDate: '',
-        btnNewChat: false
+        btnNewChat: false,
+        randomMessage: ['Ciao', 'Lo penso anche io', 'Ok', 'Come stai?', 'Cosa hai fatto oggi?', 'Fa molto freddo oggi', 'Scusami, non ho capito', 'Hai ragione!']
     },
     methods: {
         // funzione per ottonere l'url corretto dell'avatar
@@ -141,7 +142,7 @@ const app = new Vue({
                         setTimeout(function(){
                             self.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss')
                             element.messages[element.messages.length - 1].date = self.myDate;
-                            element.messages[element.messages.length - 1].message = 'Ok';
+                            element.messages[element.messages.length - 1].message = self.ChooseRandomMessage();
                         }, 1000)
                         
                     }
@@ -169,10 +170,16 @@ const app = new Vue({
         lastMexFocus: function(){
             const chatContent = document.querySelector('.chat-content.active');
             chatContent.scrollTop = chatContent.scrollHeight;
-            console.log('ok');
         },
+        // funzione che permette di rendere visibile la sezione aggiungi chat
         checkNewChat: function(){
             this.btnNewChat = !this.btnNewChat;
+        },
+        // funzione che prende randomicamente un elemento dell'array contenente le opzioni di risposta al messaggio inviato
+        ChooseRandomMessage: function(){
+            const x = Math.floor(Math.random() * (this.randomMessage.length));
+            console.log(x);
+            return this.randomMessage[x];
         }
 
 
