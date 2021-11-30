@@ -226,9 +226,9 @@ i {
 
 .message {
     font-size: 15px;
-    padding: 13px 15px;
+    padding: 14px 15px;
     min-width: 240px;
-    border-radius: 16px;
+    border-radius: 18px;
     position: relative;
 }
 

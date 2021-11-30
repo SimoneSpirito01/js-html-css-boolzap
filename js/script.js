@@ -85,7 +85,8 @@ const app = new Vue({
         ],
         newMessage: '',
         filterValue: '',
-        filteredContacts: []
+        filteredContacts: [],
+        myDate: ''
     },
     methods: {
         urlImg: function(index){
@@ -113,10 +114,11 @@ const app = new Vue({
             this.filteredContacts[index].visible = true;
         },
         sendMessage: function(){
+            this.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss')
             this.contacts.forEach(element => {
                 if (element.visible){
                     element.messages.push({
-                        date: '28/03/2020 10:10:40',
+                        date: this.myDate,
                         message: this.newMessage,
                         status: 'sent'
                     },
@@ -125,8 +127,10 @@ const app = new Vue({
                         status: 'received'
                     });
                     this.newMessage = '';
+                    const self = this;
                     setTimeout(function(){
-                        element.messages[element.messages.length - 1].date = '28/03/2020 10:10:40';
+                        self.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss')
+                        element.messages[element.messages.length - 1].date = self.myDate;
                         element.messages[element.messages.length - 1].message = 'Ok'
                     }, 1000)
                 }
@@ -143,7 +147,7 @@ const app = new Vue({
             
         }
     },
-    updated() {
-
+    mounted() {
+        
     }
 })
