@@ -89,12 +89,15 @@ const app = new Vue({
         myDate: ''
     },
     methods: {
+        // funzione per ottonere l'url corretto dell'avatar
         urlImg: function(index){
             return 'img/avatar' + this.contacts[index].avatar + '.jpg'
         },
+        // funzione per ottonere l'url corretto dell'avatar tramite l'array filtrato
         urlImgFl: function(index){
             return 'img/avatar' + this.filteredContacts[index].avatar + '.jpg'
         },
+        // funzione che rende visibile solo la chat attiva
         activeChat: function(index){
             this.contacts.forEach(element => {
                 element.visible = false;
@@ -104,6 +107,7 @@ const app = new Vue({
             });
             this.contacts[index].visible = true;
         },
+        // funzione che rende visibile solo la chat attiva tramite l'array filtrato
         activeChatFl: function(index){
             this.filteredContacts.forEach(element => {
                 element.visible = false;
@@ -113,41 +117,59 @@ const app = new Vue({
             });
             this.filteredContacts[index].visible = true;
         },
+        // funzione che permette di inviare nuovi messaggi ed ottenere una risposta
         sendMessage: function(){
-            this.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss')
-            this.contacts.forEach(element => {
-                if (element.visible){
-                    element.messages.push({
-                        date: this.myDate,
-                        message: this.newMessage,
-                        status: 'sent'
-                    },
-                    {
-                        message: 'sta scrivendo...',
-                        status: 'received'
-                    });
-                    this.newMessage = '';
-                    const self = this;
-                    setTimeout(function(){
-                        self.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss')
-                        element.messages[element.messages.length - 1].date = self.myDate;
-                        element.messages[element.messages.length - 1].message = 'Ok'
-                    }, 1000)
-                }
-                
-            })
+            if (this.newMessage.split(" ").join("") != ''){
+                this.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss');
+                this.contacts.forEach(element => {
+                    if (element.visible){
+                        element.messages.push({
+                            date: this.myDate,
+                            message: this.newMessage,
+                            status: 'sent'
+                        },
+                        {
+                            message: 'sta scrivendo...',
+                            status: 'received'
+                        });
+                        this.newMessage = '';
+                        const self = this;
+                        setTimeout(function(){
+                            self.lastMexFocus();
+                        }, 0)
+                        setTimeout(function(){
+                            self.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss')
+                            element.messages[element.messages.length - 1].date = self.myDate;
+                            element.messages[element.messages.length - 1].message = 'Ok';
+                        }, 1000)
+                        
+                    }
+                    
+                });
+            } else {
+                this.newMessage = '';
+            }
+            
+
         },
+        // funzione per rimuovere la richiesta di attivare le notifiche desktop
         removeAlert: function(){
             document.querySelector('.allow-not').remove();
+            document.querySelector('.chats').classList.add('big');
         },
+        // funzione che filtra i contatti contenenti i caratteri digitati dall'utente e li inserisci in un nuovo array
         filterChat: function(){
             this.filteredContacts = this.contacts.filter(element => {
                 return element.name.toLocaleLowerCase().includes(this.filterValue.toLocaleLowerCase());
             })
             
+        },
+        // funzione che permette di visualizzare sempre l'ultimo messaggio con overflow
+        lastMexFocus: function(){
+            const chatContent = document.querySelector('.chat-content.active');
+            chatContent.scrollTop = chatContent.scrollHeight;
+            console.log('ok');
         }
-    },
-    mounted() {
-        
+
     }
 })

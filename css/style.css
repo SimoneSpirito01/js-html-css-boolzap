@@ -110,7 +110,7 @@ i {
 }
 
 .search-chat {
-    height: 38px;
+    height: 50px;
     background-color: #fafafa;
     display: flex;
     justify-content: center;
@@ -121,12 +121,14 @@ i {
     width: calc(100% - 10px);
     height: 70%;
     display: flex;
+    border-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 
 .search-chat form button, .search-chat form input {
     background-color: white;
     border: none;
+    border-radius: 12px;
     
 }
 
@@ -134,11 +136,15 @@ i {
     width: 20%;
     color: #b0b1b0;
     border-right: 1px solid #e0dddd;
+    border-end-end-radius: 0;
+    border-top-right-radius: 0;
 }
 
 .search-chat form input {
     width: 80%;
     padding: 0 10px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
 }
 
 .search-chat form input::placeholder, .new-message input::placeholder {
@@ -146,8 +152,12 @@ i {
 }
 
 .chats {
-    height: calc(100% - 108px);
+    height: calc(100% - 120px);
     overflow-y: scroll;
+}
+
+.chats.big {
+    height: calc(100% - 50px);
 }
 
 .chat {
