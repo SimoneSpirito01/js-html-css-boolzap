@@ -151,7 +151,7 @@ const app = new Vue({
         // funzione che permette di inviare nuovi messaggi ed ottenere una risposta
         sendMessage: function(){
             if (this.newMessage.split(" ").join("") != ''){
-                this.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss');
+                this.myDate = dayjs().format('HH:mm');
                 this.contacts.forEach(element => {
                     if (element.visible){
                         element.messages.push({
@@ -171,7 +171,7 @@ const app = new Vue({
                         this.newMessage = '';
                         const self = this;
                         setTimeout(function(){
-                            self.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss')
+                            self.myDate = dayjs().format('HH:mm')
                             element.messages[element.messages.length - 1].date = self.myDate;
                             element.messages[element.messages.length - 1].message = self.ChooseRandomMessage();
                             self.shortMessage();

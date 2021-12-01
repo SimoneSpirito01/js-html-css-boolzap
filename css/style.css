@@ -192,8 +192,25 @@ i, svg {
     width: 50px;
 }
 
-.chat .chat-name {
+.chat .chat-text {
     margin-left: 15px;
+}
+
+.chat .last-mex {
+    width: 260px;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #848585;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.chat .last-mex svg {
+    vertical-align: bottom;
+    margin-bottom: 1px;
+    margin-right: 4px;
 }
 
 .header-new-chat {
@@ -393,9 +410,15 @@ i, svg {
     position: absolute;
     bottom: 3px;
     right: 9px;
+    display: flex;
+    align-items: center;
 }
 
-.message svg {
+.time-message svg {
+    margin-left: 3px;
+}
+
+.message .icon {
     color: #bdbdbd;
     width: 15px;
     position: absolute;
@@ -406,12 +429,12 @@ i, svg {
     transition: opacity 60ms ease-in-out, transform 60ms ease-in-out;
 }
 
-.message:hover svg, .message svg.active {
+.message:hover .icon, .message .icon.active {
     opacity: 1;
     transform: translateX(0);
 }
 
-.message.short svg {
+.message.short .icon {
     right: 11px;
     top: 3px;
 }
