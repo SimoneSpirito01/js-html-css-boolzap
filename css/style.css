@@ -20,6 +20,7 @@
 .container {
     width: 78%;
     height: 95%;
+    background-color: white;
     display: flex;
     box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
 }
@@ -130,19 +131,24 @@ i {
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 
-.search-chat form button, .search-chat form input {
+.search-chat form div, .search-chat form input {
     background-color: white;
     border: none;
     border-radius: 12px;
     
 }
 
-.search-chat form button {
+.search-chat form div {
     width: 20%;
+    font-size: 14px;
     color: #b0b1b0;
     border-right: 1px solid #e0dddd;
     border-end-end-radius: 0;
     border-top-right-radius: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .search-chat form input {
@@ -195,6 +201,7 @@ i {
     font-size: 22px;
     color: white;
     padding: 25px;
+    user-select: none;
 }
 
 .header-new-chat i {
@@ -203,6 +210,38 @@ i {
 
 .main-new-chat {
     height: calc(100% - 150px);
+}
+
+.main-new-chat form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 30px;
+}
+
+.main-new-chat input {
+    width: 90%;
+    border: none;
+    border-bottom: 1px solid #d9d9d9;
+    padding: 6px 0;
+    margin: 20px 0;
+}
+
+.main-new-chat .send-new-chat {
+    width: 45px;
+    aspect-ratio: 1;
+    font-size: 19px;
+    color: white;
+    border-radius: 50%;
+    background-color: #0ce85d;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
 }
 
 /* col destra */
@@ -259,7 +298,8 @@ i {
 .message {
     font-size: 15px;
     padding: 14px 15px;
-    min-width: 240px;
+    padding-right: 50px;
+    max-width: 49%;
     border-radius: 18px;
     position: relative;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -273,6 +313,11 @@ i {
 .message.received {
     background-color: white;
     float: left;
+}
+
+.message.short {
+    padding: 9px 15px;
+    padding-right: 100px;
 }
 
 .time-message {
@@ -307,7 +352,3 @@ i {
 
 
 /* debug */
-
-.debug .container {
-    background-color: white;
-}

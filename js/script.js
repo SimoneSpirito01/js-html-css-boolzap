@@ -10,17 +10,20 @@ const app = new Vue({
                 messages: [{
                     date: '10/01/2020 15:30:55',
                     message: 'Hai portato a spasso il cane?',
-                    status: 'sent'
+                    status: 'sent',
+                    short: ''
                 },
                 {
                     date: '10/01/2020 15:50:00',
                     message: 'Ricordati di dargli da mangiare',
-                    status: 'sent'
+                    status: 'sent',
+                    short: ''
                 },
                 {
                     date: '10/01/2020 16:15:22',
                     message: 'Tutto fatto!',
-                    status: 'received'
+                    status: 'received',
+                    short: ''
                 }
                 ],
             },
@@ -31,17 +34,20 @@ const app = new Vue({
                 messages: [{
                     date: '20/03/2020 16:30:00',
                     message: 'Ciao come stai?',
-                    status: 'sent'
+                    status: 'sent',
+                    short: ''
                 },
                 {
                     date: '20/03/2020 16:30:55',
                     message: 'Bene grazie! Stasera ci vediamo?',
-                    status: 'received'
+                    status: 'received',
+                    short: ''
                 },
                 {
                     date: '20/03/2020 16:35:00',
                     message: 'Mi piacerebbe ma devo andare a fare la spesa.',
-                    status: 'received'
+                    status: 'sent',
+                    short: ''
                 }
                 ],
             },
@@ -52,17 +58,20 @@ const app = new Vue({
                 messages: [{
                     date: '28/03/2020 10:10:40',
                     message: 'La Marianna va in campagna',
-                    status: 'received'
+                    status: 'received',
+                    short: ''
                 },
                 {
                     date: '28/03/2020 10:20:10',
                     message: 'Sicuro di non aver sbagliato chat?',
-                    status: 'sent'
+                    status: 'sent',
+                    short: ''
                 },
                 {
                     date: '28/03/2020 16:15:22',
                     message: 'Ah scusa!',
-                    status: 'received'
+                    status: 'received',
+                    short: ''
                 }
                 ],
             },
@@ -73,22 +82,30 @@ const app = new Vue({
                 messages: [{
                     date: '10/01/2020 15:30:55',
                     message: 'Lo sai che ha aperto una nuova pizzeria?',
-                    status: 'sent'
+                    status: 'sent',
+                    short: ''
                 },
                 {
                     date: '10/01/2020 15:50:00',
                     message: 'Si, ma preferirei andare al cinema',
-                    status: 'received'
+                    status: 'received',
+                    short: ''
                 }
                 ],
             },
         ],
+        user: {
+            name: 'Simone Spirito',
+            avatar: '_7'
+        },
         newMessage: '',
         filterValue: '',
         filteredContacts: [],
         myDate: '',
         btnNewChat: false,
-        randomMessage: ['Ciao', 'Lo penso anche io', 'Ok', 'Come stai?', 'Cosa hai fatto oggi?', 'Fa molto freddo oggi', 'Scusami, non ho capito', 'Hai ragione!']
+        randomMessage: ['Ciao', 'Lo penso anche io', 'Ok', 'Come stai?', 'Cosa hai fatto oggi?', 'Fa molto freddo oggi', 'Scusami, non ho capito', 'Hai ragione!'],
+        newContactName: '',
+        newContactNumber: ''
     },
     methods: {
         // funzione per ottonere l'url corretto dell'avatar
@@ -128,12 +145,15 @@ const app = new Vue({
                         element.messages.push({
                             date: this.myDate,
                             message: this.newMessage,
-                            status: 'sent'
+                            status: 'sent',
+                            short: ''
                         },
                         {
                             message: 'sta scrivendo...',
-                            status: 'received'
+                            status: 'received',
+                            short: ''
                         });
+                        this.shortMessage();
                         this.newMessage = '';
                         const self = this;
                         setTimeout(function(){
@@ -178,10 +198,41 @@ const app = new Vue({
         // funzione che prende randomicamente un elemento dell'array contenente le opzioni di risposta al messaggio inviato
         ChooseRandomMessage: function(){
             const x = Math.floor(Math.random() * (this.randomMessage.length));
-            console.log(x);
-            return this.randomMessage[x];
+{}            return this.randomMessage[x];
+        },
+        // funzione che permette di creare nuovi contatti
+        sendNewContact: function(){
+            this.filterValue = '';
+            if (this.newContactName.split(" ").join("") != ''){
+                console.log(parseInt(this.contacts[this.contacts.length - 1].avatar.split('_').join('')));
+                let x = parseInt(this.contacts[this.contacts.length - 1].avatar.split('_').join(''))
+                x = '_' + (x+1);
+                this.contacts.push({
+                    name: this.newContactName,
+                    avatar: x,
+                    visible: false,
+                    messages: []
+                })
+                this.newContactName = '';
+                this.newContactNumber = '';
+                this.checkNewChat();
+                this.activeChat(this.contacts.length - 1);
+            }
+        },
+        // funzione che determina se i messaggi hanno meno di 15 caratteri
+        shortMessage: function(){
+            this.contacts.forEach(element => {
+                element.messages.forEach(mex => {
+                    if (mex.message.length < 15){
+                        mex.short = 'short';
+                    }
+                });
+            });
         }
 
 
+    },
+    mounted(){
+        this.shortMessage();
     }
 })

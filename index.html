@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <div id="root" class="debug">
+    <div id="root">
 
         <!-- container -->
         <div class="container">
@@ -25,9 +25,9 @@
                 <div class="header-sx">
 
                     <div class="my-profile">
-                        <img class="avatar" src="img/avatar_io.jpg" alt="my-avatar">
+                        <img class="avatar" :src="`img/avatar${user.avatar}.jpg`" :alt="user.name">
                         <p class="my-name">
-                            Nome Utente
+                            {{user.name}}
                         </p>
                     </div>
                     <div class="icons">
@@ -58,7 +58,7 @@
 
                     <div class="search-chat">
                         <form action="">
-                            <button type="submit"><i class="fas fa-search"></i></button>
+                            <div><i class="fas fa-search"></i></div>
                             <input @keyup="filterChat" v-model="filterValue" type="search" placeholder="Cerca o inizia una nuova chat">
                         </form>
                     </div>
@@ -90,7 +90,11 @@
                     <p>Nuova Chat</p>
                 </div>
                 <div class="main-new-chat">
-
+                    <form>
+                        <input @keyup.enter="sendNewContact()" v-model="newContactName" type="text" placeholder="Inserisci il nome del contatto">
+                        <input @keyup.enter="sendNewContact()" v-model="newContactNumber" type="text" placeholder="Inserisci il cellulare del contatto">
+                        <div @click="sendNewContact()" class="send-new-chat"><i class="fas fa-arrow-right"></i></div>
+                    </form>
                 </div>
             </div>
             <!-- /col sinistra -->
@@ -127,7 +131,7 @@
                     <div v-for="(chat, i) in contacts" class="chat-content" :class="{ active: chat.visible }">
 
                         <div v-for="(message, i) in chat.messages" class="line-message">
-                            <span class="message" :class="message.status">{{message.message}}<span class="time-message">{{message.date}}</span></span>
+                            <span class="message" :class="[message.status, message.short]">{{message.message}}<span class="time-message">{{message.date}}</span></span>
                         </div>
 
                     </div>
