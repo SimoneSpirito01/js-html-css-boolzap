@@ -1,4 +1,3 @@
-
 const app = new Vue({
     el: '#root',
     data: {
@@ -11,19 +10,22 @@ const app = new Vue({
                     date: '10/01/2020 15:30:55',
                     message: 'Hai portato a spasso il cane?',
                     status: 'sent',
-                    short: ''
+                    short: '',
+                    dropdown: false
                 },
                 {
                     date: '10/01/2020 15:50:00',
                     message: 'Ricordati di dargli da mangiare',
                     status: 'sent',
-                    short: ''
+                    short: '',
+                    dropdown: false
                 },
                 {
                     date: '10/01/2020 16:15:22',
                     message: 'Tutto fatto!',
                     status: 'received',
-                    short: ''
+                    short: '',
+                    dropdown: false
                 }
                 ],
             },
@@ -35,19 +37,22 @@ const app = new Vue({
                     date: '20/03/2020 16:30:00',
                     message: 'Ciao come stai?',
                     status: 'sent',
-                    short: ''
+                    short: '',
+                    dropdown: false
                 },
                 {
                     date: '20/03/2020 16:30:55',
                     message: 'Bene grazie! Stasera ci vediamo?',
                     status: 'received',
-                    short: ''
+                    short: '',
+                    dropdown: false
                 },
                 {
                     date: '20/03/2020 16:35:00',
                     message: 'Mi piacerebbe ma devo andare a fare la spesa.',
                     status: 'sent',
-                    short: ''
+                    short: '',
+                    dropdown: false
                 }
                 ],
             },
@@ -59,19 +64,22 @@ const app = new Vue({
                     date: '28/03/2020 10:10:40',
                     message: 'La Marianna va in campagna',
                     status: 'received',
-                    short: ''
+                    short: '',
+                    dropdown: false
                 },
                 {
                     date: '28/03/2020 10:20:10',
                     message: 'Sicuro di non aver sbagliato chat?',
                     status: 'sent',
-                    short: ''
+                    short: '',
+                    dropdown: false
                 },
                 {
                     date: '28/03/2020 16:15:22',
                     message: 'Ah scusa!',
                     status: 'received',
-                    short: ''
+                    short: '',
+                    dropdown: false
                 }
                 ],
             },
@@ -83,13 +91,15 @@ const app = new Vue({
                     date: '10/01/2020 15:30:55',
                     message: 'Lo sai che ha aperto una nuova pizzeria?',
                     status: 'sent',
-                    short: ''
+                    short: '',
+                    dropdown: false
                 },
                 {
                     date: '10/01/2020 15:50:00',
                     message: 'Si, ma preferirei andare al cinema',
                     status: 'received',
-                    short: ''
+                    short: '',
+                    dropdown: false
                 }
                 ],
             },
@@ -98,6 +108,7 @@ const app = new Vue({
             name: 'Simone Spirito',
             avatar: '_7'
         },
+        alertChecked: false,
         newMessage: '',
         filterValue: '',
         filteredContacts: [],
@@ -105,7 +116,8 @@ const app = new Vue({
         btnNewChat: false,
         randomMessage: ['Ciao', 'Lo penso anche io', 'Ok', 'Come stai?', 'Cosa hai fatto oggi?', 'Fa molto freddo oggi', 'Scusami, non ho capito', 'Hai ragione!'],
         newContactName: '',
-        newContactNumber: ''
+        newContactNumber: '',
+        contentOverflow: false
     },
     methods: {
         // funzione per ottonere l'url corretto dell'avatar
@@ -146,25 +158,26 @@ const app = new Vue({
                             date: this.myDate,
                             message: this.newMessage,
                             status: 'sent',
-                            short: ''
+                            short: '',
+                            dropdown: false
                         },
                         {
                             message: 'sta scrivendo...',
                             status: 'received',
-                            short: ''
+                            short: '',
+                            dropdown: false
                         });
                         this.shortMessage();
                         this.newMessage = '';
                         const self = this;
                         setTimeout(function(){
-                            self.lastMexFocus();
-                        }, 0)
-                        setTimeout(function(){
                             self.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss')
                             element.messages[element.messages.length - 1].date = self.myDate;
                             element.messages[element.messages.length - 1].message = self.ChooseRandomMessage();
+                            self.shortMessage();
+                            const chatContent = document.querySelector('.chat-content.active')
+                            if (self.isOverflown(chatContent)) self.contentOverflow = true;
                         }, 1000)
-                        
                     }
                     
                 });
@@ -176,8 +189,8 @@ const app = new Vue({
         },
         // funzione per rimuovere la richiesta di attivare le notifiche desktop
         removeAlert: function(){
-            document.querySelector('.allow-not').remove();
-            document.querySelector('.chats').classList.add('big');
+            // document.querySelector('.allow-not').remove();
+            this.alertChecked = true;
         },
         // funzione che filtra i contatti contenenti i caratteri digitati dall'utente e li inserisci in un nuovo array
         filterChat: function(){
@@ -187,10 +200,10 @@ const app = new Vue({
             
         },
         // funzione che permette di visualizzare sempre l'ultimo messaggio con overflow
-        lastMexFocus: function(){
-            const chatContent = document.querySelector('.chat-content.active');
-            chatContent.scrollTop = chatContent.scrollHeight;
-        },
+        // lastMexFocus: function(){
+        //     const chatContent = document.querySelector('.chat-content.active');
+        //     chatContent.scrollTop = chatContent.scrollHeight;
+        // },
         // funzione che permette di rendere visibile la sezione aggiungi chat
         checkNewChat: function(){
             this.btnNewChat = !this.btnNewChat;
@@ -228,11 +241,30 @@ const app = new Vue({
                     }
                 });
             });
+        },
+        dropdownToggle: function(chat, index){
+            console.log(index)
+            console.log(chat.messages[index].dropdown)
+            if (chat.messages[index].dropdown){
+                chat.messages.forEach(element => {
+                    element.dropdown = false;
+                })
+            } else {
+                chat.messages.forEach(element => {
+                    element.dropdown = false;
+                })
+                chat.messages[index].dropdown = true
+            }
+            
+            
+        },
+        isOverflown: function(element) {
+            return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
         }
 
 
     },
     mounted(){
         this.shortMessage();
-    }
+    },
 })
