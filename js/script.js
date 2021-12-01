@@ -6,6 +6,7 @@ const app = new Vue({
                 name: 'Michele',
                 avatar: '_1',
                 visible: true,
+                contentOverflow: false,
                 messages: [{
                     date: '10/01/2020 15:30:55',
                     message: 'Hai portato a spasso il cane?',
@@ -33,6 +34,7 @@ const app = new Vue({
                 name: 'Fabio',
                 avatar: '_2',
                 visible: false,
+                contentOverflow: false,
                 messages: [{
                     date: '20/03/2020 16:30:00',
                     message: 'Ciao come stai?',
@@ -60,6 +62,7 @@ const app = new Vue({
                 name: 'Samuele',
                 avatar: '_3',
                 visible: false,
+                contentOverflow: false,
                 messages: [{
                     date: '28/03/2020 10:10:40',
                     message: 'La Marianna va in campagna',
@@ -87,6 +90,7 @@ const app = new Vue({
                 name: 'Luisa',
                 avatar: '_4',
                 visible: false,
+                contentOverflow: false,
                 messages: [{
                     date: '10/01/2020 15:30:55',
                     message: 'Lo sai che ha aperto una nuova pizzeria?',
@@ -116,8 +120,7 @@ const app = new Vue({
         btnNewChat: false,
         randomMessage: ['Ciao', 'Lo penso anche io', 'Ok', 'Come stai?', 'Cosa hai fatto oggi?', 'Fa molto freddo oggi', 'Scusami, non ho capito', 'Hai ragione!'],
         newContactName: '',
-        newContactNumber: '',
-        contentOverflow: false
+        newContactNumber: ''
     },
     methods: {
         // funzione per ottonere l'url corretto dell'avatar
@@ -176,7 +179,7 @@ const app = new Vue({
                             element.messages[element.messages.length - 1].message = self.ChooseRandomMessage();
                             self.shortMessage();
                             const chatContent = document.querySelector('.chat-content.active')
-                            if (self.isOverflown(chatContent)) self.contentOverflow = true;
+                            if (self.isOverflown(chatContent)) element.contentOverflow = true;
                         }, 1000)
                     }
                     
@@ -222,6 +225,7 @@ const app = new Vue({
                     name: this.newContactName,
                     avatar: x,
                     visible: false,
+                    contentOverflow: false,
                     messages: []
                 })
                 this.newContactName = '';
