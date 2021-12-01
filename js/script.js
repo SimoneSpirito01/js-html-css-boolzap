@@ -184,8 +184,6 @@ const app = new Vue({
             } else {
                 this.newMessage = '';
             }
-            
-
         },
         // funzione per rimuovere la richiesta di attivare le notifiche desktop
         removeAlert: function(){
@@ -242,9 +240,8 @@ const app = new Vue({
                 });
             });
         },
+        // funzione che fa apparire il dropdown del messaggio
         dropdownToggle: function(chat, index){
-            console.log(index)
-            console.log(chat.messages[index].dropdown)
             if (chat.messages[index].dropdown){
                 chat.messages.forEach(element => {
                     element.dropdown = false;
@@ -255,14 +252,15 @@ const app = new Vue({
                 })
                 chat.messages[index].dropdown = true
             }
-            
-            
         },
+        // funzione che controlla se un elemento ha overflow
         isOverflown: function(element) {
             return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+        },
+        // funzione che permette di cancellare i messaggi
+        deleteMessage: function(contact, index){
+            contact.messages.splice(index, 1);
         }
-
-
     },
     mounted(){
         this.shortMessage();

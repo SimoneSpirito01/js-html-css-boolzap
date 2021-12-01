@@ -138,7 +138,7 @@
                                     <div class="dropdown" :class="{ active: message.dropdown, overflow: contentOverflow }">
                                         <ul>
                                             <li>Info messaggio</li>
-                                            <li>Elimina messaggio</li>
+                                            <li @click="deleteMessage(chat, i)">Elimina messaggio</li>
                                             <li>Rispondi</li>
                                             <li>Messaggio importante</li>
                                         </ul>
