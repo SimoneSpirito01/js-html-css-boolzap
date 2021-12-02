@@ -118,7 +118,7 @@
                                 {{info.name}}
                             </p>
                             <p class="chat-access">
-                                Ultimo accesso oggi alle
+                                Ultimo accesso {{info.lastAccessTime}}
                             </p>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                         <div v-for="(message, i) in chat.messages" class="line-message">
                             <div class="message" :class="[message.status, message.short]">{{message.message}}
                                 <span v-if="message.status == 'sent'" class="time-message">{{message.date}}<svg viewBox="0 0 16 15" width="16" height="15" class=""><path fill="currentColor" d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"></path></svg></span>
-                                <span v-else class="time-message">{{message.date}}</span>
+                                <span v-else class="time-message">{{message.dateVisible}}</span>
                                 <svg class="icon" @click="dropdownToggle(chat, i)" :class="{ active: message.dropdown}"viewBox="0 0 18 18" width="18" height="18" class="">
                                     <path fill="currentColor" d="M3.3 4.6L9 10.3l5.7-5.7 1.6 1.6L9 13.4 1.7 6.2l1.6-1.6z"></path>
                                     <div class="dropdown" :class="{ active: message.dropdown, overflow: chat.contentOverflow }">
@@ -179,6 +179,9 @@
 
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
     <script>dayjs().format()</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.7/plugin/updateLocale.min.js" integrity="sha512-5AXG8n/7ZieZPodmu5R2fVCl8MjkA4mrYLXZ6QuhYw1hlAFa6n1YK1PbsF3ewKhfw0py00H8fnmhmnP4jph4Kw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.7/plugin/relativeTime.min.js" integrity="sha512-7YYTlJ8OTdmDMztOy8q+zfRI/+y/IWnVp1oS4kiTKa+X2P09k/ObWUemEjtMoumu8v4A0s1NZu7WjfR+UxhRCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.7/locale/it.min.js" integrity="sha512-s1OyIc1xNjLjruV9za5m8mHTVqjiBp5hlHViYMICQgtDtcOGu8JHiYVKoeGyKkF1PRm9GMbB0fhhnIRBnvhhdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-chat-scroll/dist/vue-chat-scroll.min.js"></script>
     <script src="js/script.js"></script>

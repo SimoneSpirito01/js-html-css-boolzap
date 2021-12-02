@@ -401,6 +401,10 @@ i, svg {
     align-items: center;
 }
 
+.message.received .time-message {
+    right: 13px;
+}
+
 .time-message svg {
     margin-left: 3px;
 }

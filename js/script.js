@@ -7,8 +7,10 @@ const app = new Vue({
                 avatar: '_1',
                 visible: true,
                 contentOverflow: false,
+                lastAccessTime: '',
                 messages: [{
                     date: '10/01/2020 15:30:55',
+                    dateVisible: '',
                     message: 'Hai portato a spasso il cane?',
                     status: 'sent',
                     short: '',
@@ -16,6 +18,7 @@ const app = new Vue({
                 },
                 {
                     date: '10/01/2020 15:50:00',
+                    dateVisible: '',
                     message: 'Ricordati di dargli da mangiare',
                     status: 'sent',
                     short: '',
@@ -23,6 +26,7 @@ const app = new Vue({
                 },
                 {
                     date: '10/01/2020 16:15:22',
+                    dateVisible: '',
                     message: 'Tutto fatto!',
                     status: 'received',
                     short: '',
@@ -35,8 +39,10 @@ const app = new Vue({
                 avatar: '_2',
                 visible: false,
                 contentOverflow: false,
+                lastAccessTime: '',
                 messages: [{
                     date: '20/03/2020 16:30:00',
+                    dateVisible: '',
                     message: 'Ciao come stai?',
                     status: 'sent',
                     short: '',
@@ -44,6 +50,7 @@ const app = new Vue({
                 },
                 {
                     date: '20/03/2020 16:30:55',
+                    dateVisible: '',
                     message: 'Bene grazie! Stasera ci vediamo?',
                     status: 'received',
                     short: '',
@@ -51,6 +58,7 @@ const app = new Vue({
                 },
                 {
                     date: '20/03/2020 16:35:00',
+                    dateVisible: '',
                     message: 'Mi piacerebbe ma devo andare a fare la spesa.',
                     status: 'sent',
                     short: '',
@@ -63,8 +71,10 @@ const app = new Vue({
                 avatar: '_3',
                 visible: false,
                 contentOverflow: false,
+                lastAccessTime: '',
                 messages: [{
                     date: '28/03/2020 10:10:40',
+                    dateVisible: '',
                     message: 'La Marianna va in campagna',
                     status: 'received',
                     short: '',
@@ -72,6 +82,7 @@ const app = new Vue({
                 },
                 {
                     date: '28/03/2020 10:20:10',
+                    dateVisible: '',
                     message: 'Sicuro di non aver sbagliato chat?',
                     status: 'sent',
                     short: '',
@@ -79,6 +90,7 @@ const app = new Vue({
                 },
                 {
                     date: '28/03/2020 16:15:22',
+                    dateVisible: '',
                     message: 'Ah scusa!',
                     status: 'received',
                     short: '',
@@ -91,8 +103,10 @@ const app = new Vue({
                 avatar: '_4',
                 visible: false,
                 contentOverflow: false,
+                lastAccessTime: '',
                 messages: [{
                     date: '10/01/2020 15:30:55',
+                    dateVisible: '',
                     message: 'Lo sai che ha aperto una nuova pizzeria?',
                     status: 'sent',
                     short: '',
@@ -100,6 +114,7 @@ const app = new Vue({
                 },
                 {
                     date: '10/01/2020 15:50:00',
+                    dateVisible: '',
                     message: 'Si, ma preferirei andare al cinema',
                     status: 'received',
                     short: '',
@@ -112,11 +127,13 @@ const app = new Vue({
             name: 'Simone Spirito',
             avatar: '_7'
         },
+        actTime: dayjs().format('DD/MM/YYYY HH:mm:ss'),
         alertChecked: false,
         newMessage: '',
         filterValue: '',
         filteredContacts: [],
         myDate: '',
+        myDateVisible: '',
         btnNewChat: false,
         randomMessage: ['Ciao', 'Lo penso anche io', 'Ok', 'Come stai?', 'Cosa hai fatto oggi?', 'Fa molto freddo oggi', 'Scusami, non ho capito', 'Hai ragione!'],
         newContactName: '',
@@ -146,17 +163,20 @@ const app = new Vue({
         // funzione che permette di inviare nuovi messaggi ed ottenere una risposta
         sendMessage: function(){
             if (this.newMessage.split(" ").join("") != ''){
-                this.myDate = dayjs().format('HH:mm');
+                this.myDateVisible = dayjs().format('HH:mm');
                 this.contacts.forEach(element => {
                     if (element.visible){
                         element.messages.push({
-                            date: this.myDate,
+                            date: this.myDateVisible,
+                            dateVisible: '',
                             message: this.newMessage,
                             status: 'sent',
                             short: '',
                             dropdown: false
                         },
                         {
+                            date: '',
+                            dateVisible: '',
                             message: 'sta scrivendo...',
                             status: 'received',
                             short: '',
@@ -166,8 +186,10 @@ const app = new Vue({
                         this.newMessage = '';
                         const self = this;
                         setTimeout(function(){
-                            self.myDate = dayjs().format('HH:mm')
+                            self.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss')
+                            self.myDateVisible = dayjs().format('HH:mm')
                             element.messages[element.messages.length - 1].date = self.myDate;
+                            element.messages[element.messages.length - 1].dateVisible = self.myDateVisible;
                             element.messages[element.messages.length - 1].message = self.ChooseRandomMessage();
                             self.shortMessage();
                             const chatContent = document.querySelector('.chat-content')
@@ -219,6 +241,7 @@ const app = new Vue({
                     avatar: x,
                     visible: false,
                     contentOverflow: false,
+                    lastAccessTime: '',
                     messages: []
                 })
                 this.newContactName = '';
@@ -257,9 +280,34 @@ const app = new Vue({
         // funzione che permette di cancellare i messaggi
         deleteMessage: function(contact, index){
             contact.messages.splice(index, 1);
+        },
+        // funzione che permette di stampare l'ultimo accesso del contatto
+        lastAccess: function(element){
+            dayjs.extend(dayjs_plugin_relativeTime);
+            dayjs.locale('it');
+            let x = element.messages[element.messages.length - 1].date.split(' ')[0].split('/').reverse().join('/') + ' ' + element.messages[element.messages.length - 1].date.split(' ')[1];
+            element.lastAccessTime = (!isNaN(parseInt(x))) ? dayjs(x).fromNow() : 'ora';
+            return element.lastAccessTime;
         }
+    },
+    created(){
+        this.contacts.forEach(element => {
+            element.messages.forEach(mex => {
+                if (mex.dateVisible == '') mex.dateVisible = mex.date;
+            })
+        })
     },
     mounted(){
         this.shortMessage();
+        const self = this;
+        setInterval(function(){
+            self.contacts.forEach(element => {
+                if (element.visible){
+                    self.actTime = dayjs().format('DD/MM/YYYY HH:mm:ss');
+                    self.lastAccess(element);
+                }
+            })
+        }, 1000)
+
     },
 })
