@@ -19,7 +19,7 @@
         <div class="container">
 
             <!-- col sinistra -->
-            <div v-if="btnNewChat == false" class="col-sx">
+            <div :class="(btnNewChat == false) ? 'visible' : ''" class="col-sx">
 
                 <!-- header-sx -->
                 <div class="header-sx">
@@ -90,7 +90,7 @@
 
             </div>
 
-            <div v-else class="col-sx">
+            <div :class="(btnNewChat) ? 'visible' : ''" class="col-sx">
                 <div class="header-new-chat">
                     <i @click="checkNewChat()" class="fas fa-arrow-left"></i>
                     <p>Nuova Chat</p>
@@ -118,7 +118,7 @@
                                 {{info.name}}
                             </p>
                             <p class="chat-access">
-                                Ultimo accesso {{info.lastAccessTime}}
+                                {{info.lastAccessTime}}
                             </p>
                         </div>
                     </div>

@@ -149,6 +149,7 @@ const app = new Vue({
                 element.visible = false;
             });
             this.contacts[index].visible = true;
+            this.lastAccess(this.contacts[index]);
         },
         // funzione che rende visibile solo la chat attiva tramite l'array filtrato
         activeChatFl: function(index){
@@ -285,9 +286,12 @@ const app = new Vue({
         lastAccess: function(element){
             dayjs.extend(dayjs_plugin_relativeTime);
             dayjs.locale('it');
-            let x = element.messages[element.messages.length - 1].date.split(' ')[0].split('/').reverse().join('/') + ' ' + element.messages[element.messages.length - 1].date.split(' ')[1];
-            element.lastAccessTime = (!isNaN(parseInt(x))) ? dayjs(x).fromNow() : 'ora';
-            return element.lastAccessTime;
+            if (element.messages != ''){
+                let x = element.messages[element.messages.length - 1].date.split(' ')[0].split('/').reverse().join('/') + ' ' + element.messages[element.messages.length - 1].date.split(' ')[1];
+                element.lastAccessTime = (!isNaN(parseInt(x))) ? 'Ultimo accesso ' + dayjs(x).fromNow() : 'Ultimo accesso ' + 'ora';
+                return element.lastAccessTime;
+            }
+            
         }
     },
     created(){
@@ -300,6 +304,10 @@ const app = new Vue({
     mounted(){
         this.shortMessage();
         const self = this;
+        this.contacts.forEach(element => {
+            self.actTime = dayjs().format('DD/MM/YYYY HH:mm:ss');
+            self.lastAccess(element);
+        })
         setInterval(function(){
             self.contacts.forEach(element => {
                 if (element.visible){
