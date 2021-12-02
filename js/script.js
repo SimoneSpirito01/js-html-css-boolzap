@@ -137,7 +137,8 @@ const app = new Vue({
         btnNewChat: false,
         randomMessage: ['Ciao', 'Lo penso anche io', 'Ok', 'Come stai?', 'Cosa hai fatto oggi?', 'Fa molto freddo oggi', 'Scusami, non ho capito', 'Hai ragione!'],
         newContactName: '',
-        newContactNumber: ''
+        newContactNumber: '',
+        micStartStop: 'start'
     },
     methods: {
         // funzione che rende visibile solo la chat attiva
@@ -199,6 +200,44 @@ const app = new Vue({
                     }
                     
                 });
+            } else if (this.micStartStop == 'stop') {
+                console.log('ok')
+                this.myDateVisible = dayjs().format('HH:mm');
+                this.contacts.forEach(element => {
+                    if (element.visible){
+                        console.log(element)
+                        element.messages.push({
+                            date: this.myDateVisible,
+                            dateVisible: '',
+                            message: '',
+                            messageVoc: `<audio class="voc-save" controls></audio>`,
+                            status: 'sent',
+                            short: '',
+                            dropdown: false
+                        },
+                        {
+                            date: '',
+                            dateVisible: '',
+                            message: 'sta scrivendo...',
+                            status: 'received',
+                            short: '',
+                            dropdown: false
+                        });
+                        
+                        this.newMessage = '';
+                        const self = this;
+                        setTimeout(function(){
+                            self.myDate = dayjs().format('DD/MM/YYYY HH:mm:ss')
+                            self.myDateVisible = dayjs().format('HH:mm')
+                            element.messages[element.messages.length - 1].date = self.myDate;
+                            element.messages[element.messages.length - 1].dateVisible = self.myDateVisible;
+                            element.messages[element.messages.length - 1].message = self.ChooseRandomMessage();
+                            const chatContent = document.querySelector('.chat-content')
+                            if (self.isOverflown(chatContent)) element.contentOverflow = true;
+                        }, 1000)
+                    }
+                });
+
             } else {
                 this.newMessage = '';
             }
@@ -233,7 +272,6 @@ const app = new Vue({
         sendNewContact: function(){
             this.filterValue = '';
             if (this.newContactName.split(" ").join("") != ''){
-                console.log(parseInt(this.contacts[this.contacts.length - 1].avatar.split('_').join('')));
                 let x = parseInt(this.contacts[this.contacts.length - 1].avatar.split('_').join(''))
                 x = '_' + (x+1);
                 if (x > 8) x = '';
@@ -292,6 +330,16 @@ const app = new Vue({
                 return element.lastAccessTime;
             }
             
+        },
+        toggleMic: function(){
+            (this.micStartStop == 'start') ? this.micStartStop = 'stop' :  this.micStartStop = 'start'
+        },
+        createVoc: function(element){
+            if (element.messageVoc != undefined){
+                return element.messageVoc;
+            } else{
+                return  element.message;
+            }
         }
     },
     created(){
@@ -316,6 +364,89 @@ const app = new Vue({
                 }
             })
         }, 1000)
+
+
+        // vocal message
+
+        let constraintObj = { 
+            audio: true, 
+            
+        }; 
+        
+        //handle older browsers that might implement getUserMedia in some way
+        if (navigator.mediaDevices === undefined) {
+            navigator.mediaDevices = {};
+            navigator.mediaDevices.getUserMedia = function(constraintObj) {
+                let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                if (!getUserMedia) {
+                    return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+                }
+                return new Promise(function(resolve, reject) {
+                    getUserMedia.call(navigator, constraintObj, resolve, reject);
+                });
+            }
+        }else{
+            navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+                devices.forEach(device=>{
+                    console.log(device.kind.toUpperCase(), device.label);
+                    //, device.deviceId
+                })
+            })
+            .catch(err=>{
+                console.log(err.name, err.message);
+            })
+        }
+
+        navigator.mediaDevices.getUserMedia(constraintObj)
+        .then(function(mediaStreamObj) {
+            // //connect the media stream to the first video element
+            // let audio = document.querySelector('audio');
+            // if ("srcObject" in audio) {
+            //     audio.srcObject = mediaStreamObj;
+            // } else {
+            //     //old version
+            //     audio.src = window.URL.createObjectURL(mediaStreamObj);
+            // }
+            
+            // audio.onloadedmetadata = function(ev) {
+            //     //show in the audio element what is being captured by the webcam
+            //     audio.play();
+            // };
+            
+            //add listeners for saving video/audio
+            let start = document.getElementById('btnStart');
+            let stop = document.getElementById('btnStop');
+            
+            let mediaRecorder = new MediaRecorder(mediaStreamObj);
+            let chunks = [];
+            
+            start.addEventListener('click', (ev)=>{
+                mediaRecorder.start();
+                console.log(mediaRecorder.state);
+            })
+            stop.addEventListener('click', (ev)=>{
+                setTimeout(function(){
+                    mediaRecorder.stop();
+                    console.log(mediaRecorder.state);
+                }, 500)
+            });
+            mediaRecorder.ondataavailable = function(ev) {
+                chunks.push(ev.data);
+            }
+            mediaRecorder.onstop = (ev)=>{
+                setTimeout(() => {
+                    let vocSave = document.getElementsByClassName('voc-save')[document.getElementsByClassName('voc-save').length - 1];
+                    let blob = new Blob(chunks, { 'type' : 'video/mp4;' });
+                    chunks = [];
+                    let videoURL = window.URL.createObjectURL(blob);
+                    vocSave.src = videoURL;
+                }, 501);
+            }
+        })
+        .catch(function(err) { 
+            console.log(err.name, err.message); 
+        });
 
     },
 })

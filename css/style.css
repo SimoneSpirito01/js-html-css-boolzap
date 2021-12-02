@@ -386,6 +386,9 @@ i, svg {
     border-radius: 18px;
     position: relative;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .message.sent {
@@ -443,6 +446,24 @@ i, svg {
     top: 3px;
 }
 
+.message-content {
+    display: flex;
+}
+
+.message-content audio {
+    width: 220px;
+    height: 40px;
+}
+
+.message-content audio::-webkit-media-controls-panel {
+    font-size: 12px;
+    background-color: #d5f9ba;
+}
+
+.message-content .avatar-cont {
+    display: inline-block;
+}
+
 .new-message {
     height: 60px;
     background-color: #f3eeea;
@@ -464,6 +485,33 @@ i, svg {
     padding: 0 15px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
+
+.micro {
+    width: 25px;
+    height: 25px;
+    position: relative;
+}
+
+#btnStart, #btnStop {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    display: none;
+}
+
+#btnStart.active, #btnStop.active {
+    z-index: 10;
+    display: block;
+    cursor: pointer;
+
+}
+
+#btnStop.active svg {
+    color: red;
+}
+
+
 
 
 /* debug */
