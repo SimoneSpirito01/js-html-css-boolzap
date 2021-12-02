@@ -123,14 +123,6 @@ const app = new Vue({
         newContactNumber: ''
     },
     methods: {
-        // funzione per ottonere l'url corretto dell'avatar
-        urlImg: function(index){
-            return 'img/avatar' + this.contacts[index].avatar + '.jpg'
-        },
-        // funzione per ottonere l'url corretto dell'avatar tramite l'array filtrato
-        urlImgFl: function(index){
-            return 'img/avatar' + this.filteredContacts[index].avatar + '.jpg'
-        },
         // funzione che rende visibile solo la chat attiva
         activeChat: function(index){
             this.contacts.forEach(element => {
@@ -178,7 +170,7 @@ const app = new Vue({
                             element.messages[element.messages.length - 1].date = self.myDate;
                             element.messages[element.messages.length - 1].message = self.ChooseRandomMessage();
                             self.shortMessage();
-                            const chatContent = document.querySelector('.chat-content.active')
+                            const chatContent = document.querySelector('.chat-content')
                             if (self.isOverflown(chatContent)) element.contentOverflow = true;
                         }, 1000)
                     }
@@ -221,6 +213,7 @@ const app = new Vue({
                 console.log(parseInt(this.contacts[this.contacts.length - 1].avatar.split('_').join('')));
                 let x = parseInt(this.contacts[this.contacts.length - 1].avatar.split('_').join(''))
                 x = '_' + (x+1);
+                if (x > 8) x = '';
                 this.contacts.push({
                     name: this.newContactName,
                     avatar: x,

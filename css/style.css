@@ -271,14 +271,6 @@ i, svg {
     height: 100%;
 }
 
-.chat-profile {
-    display: none;
-}
-
-.chat-profile.active {
-    display: flex;
-}
-
 .chat-info {
     font-size: 15px;
     margin-left: 15px;
@@ -298,11 +290,6 @@ i, svg {
     background-image: url(../img/mine.jpg);
     padding: 30px 50px;
     overflow-y: scroll;
-    display: none;
-}
-
-.chat-content.active {
-    display: block;
 }
 
 .line-message {
