@@ -279,7 +279,7 @@ const app = new Vue({
                 let x = parseInt(this.contacts[this.contacts.length - 1].avatar.split('_').join(''))
                 x = '_' + (x+1);
                 if (x > 8) x = '';
-                this.contacts.push({
+                this.contacts.unshift({
                     name: this.newContactName,
                     avatar: x,
                     visible: false,
@@ -290,14 +290,14 @@ const app = new Vue({
                 this.newContactName = '';
                 this.newContactNumber = '';
                 this.checkNewChat();
-                this.activeChat(this.contacts.length - 1);
+                this.activeChat(0);
             }
         },
         // funzione che determina se i messaggi hanno meno di 15 caratteri
         shortMessage: function(){
             this.contacts.forEach(element => {
                 element.messages.forEach(mex => {
-                    if (mex.message.length < 15){
+                    if (mex.message.length < 15 && mex.messageVoc != `<audio class="voc-save" controls></audio>`){
                         mex.short = 'short';
                     }
                 });
@@ -357,6 +357,20 @@ const app = new Vue({
                     mex.dropdown = false;
                 })
             })
+        },
+        ordContacts: function(){
+            // const array = []
+            // for (let i = 0; i < this.contacts.length; i++){
+            //     if (this.contacts[i].messages[this.contacts[i].messages.length - 1].date.diff(this.contacts[i + 1].messages[this.contacts[i + 1].messages.length - 1].date) > 0) {
+            //         array.push(this.contacts[i]);
+            //     }
+            // }
+            // this.contacts.sort(function(a, b) {
+            //     let date1 = a.messages[a.messages.length - 1].date;
+            //     let date2 = b.messages[b.messages.length - 1].date;
+            //     return date1 - date2;
+            // });
+            // console.log(this.contacts)
         }
     },
     created(){
@@ -381,7 +395,6 @@ const app = new Vue({
                 }
             })
         }, 1000)
-
 
         // vocal message
 
@@ -452,4 +465,7 @@ const app = new Vue({
         });
 
     },
+    updated() {
+        
+    }
 })
