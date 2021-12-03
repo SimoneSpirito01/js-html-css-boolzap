@@ -185,6 +185,7 @@ i, svg {
 .chats {
     flex-grow: 1;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .chat {
@@ -224,6 +225,11 @@ i, svg {
     vertical-align: bottom;
     margin-bottom: 1px;
     margin-right: 4px;
+}
+
+.chat .last-mex i {
+    font-size: 12px;
+    margin-left: 4px;
 }
 
 .header-new-chat {
@@ -303,6 +309,7 @@ i, svg {
     background-image: url(../img/mine.jpg);
     padding: 30px 50px;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .line-message {

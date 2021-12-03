@@ -1,4 +1,8 @@
+
+const clickaway = window.VueClickaway.mixin;
+
 const app = new Vue({
+    mixins: [ clickaway ],
     el: '#root',
     data: {
         contacts: [
@@ -334,15 +338,25 @@ const app = new Vue({
             }
             
         },
+        // funzione on/off del registratore vocale
         toggleMic: function(){
             (this.micStartStop == 'start') ? this.micStartStop = 'stop' :  this.micStartStop = 'start'
         },
+        // funzione che permette di stampare il tag html audio quando viene inviato un messaggio vocale
         createVoc: function(element){
             if (element.messageVoc != undefined){
                 return element.messageVoc;
             } else{
                 return  element.message;
             }
+        },
+        // funzione che permette di chiudere tutti i dropdown menu al click away
+        closeAllDropdowns: function(){
+            this.contacts.forEach(element => {
+                element.messages.forEach(mex => {
+                    mex.dropdown = false;
+                })
+            })
         }
     },
     created(){
