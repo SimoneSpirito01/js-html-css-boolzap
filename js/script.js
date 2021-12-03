@@ -324,8 +324,11 @@ const app = new Vue({
         lastAccess: function(element){
             dayjs.extend(dayjs_plugin_relativeTime);
             dayjs.locale('it');
-            if (element.messages != ''){
-                let x = element.messages[element.messages.length - 1].date.split(' ')[0].split('/').reverse().join('/') + ' ' + element.messages[element.messages.length - 1].date.split(' ')[1];
+            const array = element.messages.filter(mex => {
+                return mex.status == 'received';
+            })
+            if (array != ''){
+                let x = array[array.length - 1].date.split(' ')[0].split('/').reverse().join('/') + ' ' + array[array.length - 1].date.split(' ')[1];
                 element.lastAccessTime = (!isNaN(parseInt(x))) ? 'Ultimo accesso ' + dayjs(x).fromNow() : 'Ultimo accesso ' + 'ora';
                 return element.lastAccessTime;
             }
@@ -370,7 +373,6 @@ const app = new Vue({
 
         let constraintObj = { 
             audio: true, 
-            
         }; 
         
         //handle older browsers that might implement getUserMedia in some way
@@ -385,7 +387,7 @@ const app = new Vue({
                     getUserMedia.call(navigator, constraintObj, resolve, reject);
                 });
             }
-        }else{
+        } else{
             navigator.mediaDevices.enumerateDevices()
             .then(devices => {
                 devices.forEach(device=>{
@@ -400,19 +402,6 @@ const app = new Vue({
 
         navigator.mediaDevices.getUserMedia(constraintObj)
         .then(function(mediaStreamObj) {
-            // //connect the media stream to the first video element
-            // let audio = document.querySelector('audio');
-            // if ("srcObject" in audio) {
-            //     audio.srcObject = mediaStreamObj;
-            // } else {
-            //     //old version
-            //     audio.src = window.URL.createObjectURL(mediaStreamObj);
-            // }
-            
-            // audio.onloadedmetadata = function(ev) {
-            //     //show in the audio element what is being captured by the webcam
-            //     audio.play();
-            // };
             
             //add listeners for saving video/audio
             let start = document.getElementById('btnStart');
