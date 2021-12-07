@@ -223,7 +223,7 @@ const app = new Vue({
                             dropdown: false
                         },
                         {
-                            date: '',
+                            date: dayjs().format('DD/MM/YYYY HH:mm:ss'),
                             dateVisible: '',
                             message: 'sta scrivendo...',
                             status: 'received',
