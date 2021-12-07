@@ -131,6 +131,7 @@ const app = new Vue({
             name: 'Simone Spirito',
             avatar: '_7'
         },
+        orderedContacts: [],
         actTime: dayjs().format('DD/MM/YYYY HH:mm:ss'),
         alertChecked: false,
         newMessage: '',
@@ -181,13 +182,14 @@ const app = new Vue({
                             dropdown: false
                         },
                         {
-                            date: '',
+                            date: dayjs().format('DD/MM/YYYY HH:mm:ss'),
                             dateVisible: '',
                             message: 'sta scrivendo...',
                             status: 'received',
                             short: '',
                             dropdown: false
                         });
+                        this.ordContacts()
                         this.shortMessage();
                         this.newMessage = '';
                         const self = this;
@@ -200,6 +202,7 @@ const app = new Vue({
                             self.shortMessage();
                             const chatContent = document.querySelector('.chat-content')
                             if (self.isOverflown(chatContent)) element.contentOverflow = true;
+                            
                         }, 1000)
                     }
                     
@@ -227,7 +230,7 @@ const app = new Vue({
                             short: '',
                             dropdown: false
                         });
-                        
+                        this.ordContacts()
                         this.newMessage = '';
                         const self = this;
                         setTimeout(function(){
@@ -270,7 +273,7 @@ const app = new Vue({
         // funzione che prende randomicamente un elemento dell'array contenente le opzioni di risposta al messaggio inviato
         ChooseRandomMessage: function(){
             const x = Math.floor(Math.random() * (this.randomMessage.length));
-{}            return this.randomMessage[x];
+            return this.randomMessage[x];
         },
         // funzione che permette di creare nuovi contatti
         sendNewContact: function(){
@@ -291,6 +294,7 @@ const app = new Vue({
                 this.newContactNumber = '';
                 this.checkNewChat();
                 this.activeChat(0);
+                this.ordContacts()
             }
         },
         // funzione che determina se i messaggi hanno meno di 15 caratteri
@@ -359,28 +363,88 @@ const app = new Vue({
             })
         },
         ordContacts: function(){
-            // const array = []
-            // for (let i = 0; i < this.contacts.length; i++){
-            //     if (this.contacts[i].messages[this.contacts[i].messages.length - 1].date.diff(this.contacts[i + 1].messages[this.contacts[i + 1].messages.length - 1].date) > 0) {
-            //         array.push(this.contacts[i]);
-            //     }
-            // }
-            // this.contacts.sort(function(a, b) {
-            //     let date1 = a.messages[a.messages.length - 1].date;
-            //     let date2 = b.messages[b.messages.length - 1].date;
-            //     return date1 - date2;
-            // });
-            // console.log(this.contacts)
+
+            let copyContacts = [...this.contacts];
+            console.log(copyContacts)
+
+            if (this.contacts[0].messages.length != 0){
+
+                this.contacts.forEach(element => {
+                    let x = 1
+                    while (element.messages[element.messages.length - x].status != 'received'){
+                        x++;
+                        if (x == element.messages.length) return;
+                    }
+                    element.access = element.messages[element.messages.length - x].date
+                    console.log(element.access);
+                });
+                
+                this.orderedContacts = [];
+                while (this.orderedContacts.length != this.contacts.length){
+                    let recentChat = 1;
+                    for (let i = 0; i < copyContacts.length; i++){
+                        if (copyContacts.length > 1){
+                            console.log(copyContacts[recentChat].access.split(' ')[1].split(':'))
+                            if (copyContacts[recentChat].access.split(' ')[0].split('/')[2] == copyContacts[i].access.split(' ')[0].split('/')[2]){
+                                if (copyContacts[recentChat].access.split(' ')[0].split('/')[1] == copyContacts[i].access.split(' ')[0].split('/')[1]){
+                                    if (copyContacts[recentChat].access.split(' ')[0].split('/')[0] == copyContacts[i].access.split(' ')[0].split('/')[0]){
+                                        if (copyContacts[recentChat].access.split(' ')[1].split(':')[0] == copyContacts[i].access.split(' ')[1].split(':')[0]){
+                                            if (copyContacts[recentChat].access.split(' ')[1].split(':')[1] == copyContacts[i].access.split(' ')[1].split(':')[1]){
+                                                if (copyContacts[recentChat].access.split(' ')[1].split(':')[2] < copyContacts[i].access.split(' ')[1].split(':')[2]){
+                                                    recentChat = i;
+                                                }
+                                            } else if (copyContacts[recentChat].access.split(' ')[1].split(':')[1] < copyContacts[i].access.split(' ')[1].split(':')[1]) {
+                                                recentChat = i;
+                                            }
+                                        } else if (copyContacts[recentChat].access.split(' ')[1].split(':')[0] < copyContacts[i].access.split(' ')[1].split(':')[0]) {
+                                            recentChat = i;
+                                        }
+                                    } else if (copyContacts[recentChat].access.split(' ')[0].split('/')[0] < copyContacts[i].access.split(' ')[0].split('/')[0]) {
+                                        recentChat = i;
+                                    }
+                                } else if (copyContacts[recentChat].access.split(' ')[0].split('/')[1] < copyContacts[i].access.split(' ')[0].split('/')[1]) {
+                                    recentChat = i;
+                                }
+                            } else if (copyContacts[recentChat].access.split(' ')[0].split('/')[2] < copyContacts[i].access.split(' ')[0].split('/')[2]) {
+                                recentChat = i;
+                            }
+                        } else {
+                            recentChat = 0;
+                        }
+                        console.log(recentChat)
+                        console.log(i)
+                    }
+    
+                    this.orderedContacts.push(copyContacts[recentChat]);
+                    copyContacts.splice(recentChat, 1);
+                    console.log(copyContacts);
+                    console.log(this.orderedContacts);
+                }
+                this.contacts = [...this.orderedContacts];
+            }else {
+                console.log(this.contacts[0].messages.length)
+            }
+
+
+
+
+
+            
+           
+                
         }
+    
     },
     created(){
         this.contacts.forEach(element => {
             element.messages.forEach(mex => {
                 if (mex.dateVisible == '') mex.dateVisible = mex.date;
             })
-        })
+        });
+        
     },
     mounted(){
+        this.ordContacts();
         this.shortMessage();
         const self = this;
         this.contacts.forEach(element => {
@@ -465,7 +529,9 @@ const app = new Vue({
         });
 
     },
-    updated() {
-        
-    }
+    // watch: {
+    //     contacts: function(){
+    //         this.ordContacts()
+    //     }
+    // }
 })
